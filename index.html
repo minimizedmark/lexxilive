@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lexxilive</title>
+    <style>
+        body {
+            background-color: #333;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            text-align: center;
+            padding: 50px 20px;
+        }
+        .hero {
+            margin: 20px;
+            padding: 40px;
+            background-color: #444;
+            border-radius: 8px;
+        }
+        .waitlist {
+            margin-top: 20px;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #222;
+            font-size: 0.8em;
+        }
+        input[type="email"] {
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            width: 250px;
+        }
+        input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #555;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #666;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to Lexxilive</h1>
+        <p>Own Your Persona. Own Your Income.</p>
+    </header>
+    <div class="hero">
+        <h2>Your Future Starts Here</h2>
+        <p>Join us to take control of your digital presence.</p>
+        <div class="waitlist">
+            <form action="#" method="POST">
+                <input type="email" placeholder="Enter your email" required>
+                <input type="submit" value="Join Waitlist">
+            </form>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2026 Lexxilive. All rights reserved.</p>
+    </footer>
+    <script>
+        document.querySelector('form').onsubmit = function(e) {
+            e.preventDefault();
+            const email = this.querySelector('input[type="email"]').value;
+            alert('Thank you for signing up, ' + email + '!');
+            this.reset();
+        };
+    </script>
+</body>
+</html>
