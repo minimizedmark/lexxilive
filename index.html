@@ -1,79 +1,587 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lexxilive</title>
-    <style>
-        body {
-            background-color: #333;
-            color: #fff;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            text-align: center;
-            padding: 50px 20px;
-        }
-        .hero {
-            margin: 20px;
-            padding: 40px;
-            background-color: #444;
-            border-radius: 8px;
-        }
-        .waitlist {
-            margin-top: 20px;
-        }
-        footer {
-            text-align: center;
-            padding: 20px;
-            background-color: #222;
-            font-size: 0.8em;
-        }
-        input[type="email"] {
-            padding: 10px;
-            border-radius: 5px;
-            border: none;
-            width: 250px;
-        }
-        input[type="submit"] {
-            padding: 10px 20px;
-            background-color: #555;
-            border: none;
-            color: white;
-            cursor: pointer;
-        }
-        input[type="submit"]:hover {
-            background-color: #666;
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Lexxilive — Own Your Persona. Own Your Income." />
+  <title>Lexxilive — Own Your Persona. Own Your Income.</title>
+  <style>
+    :root {
+      --bg0: #070A12;
+      --bg1: #0B1020;
+      --card: rgba(255,255,255,.06);
+      --card2: rgba(255,255,255,.09);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.68);
+      --faint: rgba(255,255,255,.45);
+      --border: rgba(255,255,255,.12);
+      --shadow: 0 20px 60px rgba(0,0,0,.45);
+      --accent: #7C5CFF;
+      --accent2: #2EE9A6;
+      --danger: #FF4D6D;
+      --ok: #2EE9A6;
+      --ring: 0 0 0 4px rgba(124,92,255,.22);
+      --radius: 18px;
+      --radius2: 28px;
+      --max: 1120px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      color: var(--text);
+      background:
+        radial-gradient(900px 550px at 20% 10%, rgba(124,92,255,.28), transparent 60%),
+        radial-gradient(900px 550px at 80% 30%, rgba(46,233,166,.18), transparent 60%),
+        radial-gradient(700px 450px at 50% 95%, rgba(255,77,109,.12), transparent 60%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(var(--max), calc(100% - 40px)); margin: 0 auto; }
+
+    /* Subtle animated grain */
+    .grain {
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      opacity: .06;
+      mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+      transform: translateZ(0);
+      animation: grainMove 9s steps(6) infinite;
+    }
+    @keyframes grainMove {
+      0% { transform: translate3d(0,0,0); }
+      20% { transform: translate3d(-3%, 2%, 0); }
+      40% { transform: translate3d(2%, -2%, 0); }
+      60% { transform: translate3d(-2%, -3%, 0); }
+      80% { transform: translate3d(3%, 1%, 0); }
+      100% { transform: translate3d(0,0,0); }
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(10px);
+      background: linear-gradient(180deg, rgba(7,10,18,.78), rgba(7,10,18,.25));
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      gap: 14px;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      letter-spacing: .2px;
+    }
+    .logo {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background:
+        radial-gradient(12px 12px at 30% 30%, rgba(255,255,255,.55), transparent 60%),
+        linear-gradient(135deg, rgba(124,92,255,1), rgba(46,233,166,1));
+      box-shadow: 0 14px 34px rgba(124,92,255,.22);
+    }
+    .brand small {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: .5px;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-weight: 650;
+      cursor: pointer;
+      transition: transform .15s ease, background .15s ease, border-color .15s ease;
+      user-select: none;
+    }
+    .btn:hover { transform: translateY(-1px); background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.18); }
+    .btn:active { transform: translateY(0px); }
+    .btn.primary {
+      border: 1px solid rgba(124,92,255,.55);
+      background: linear-gradient(135deg, rgba(124,92,255,.95), rgba(46,233,166,.85));
+      color: rgba(10,12,18,.98);
+      box-shadow: 0 18px 40px rgba(124,92,255,.20);
+    }
+    .btn.primary:hover { border-color: rgba(46,233,166,.65); }
+    .btn .kbd {
+      font-family: var(--mono);
+      font-size: 12px;
+      padding: 2px 6px;
+      border: 1px solid rgba(0,0,0,.25);
+      border-bottom-color: rgba(0,0,0,.35);
+      border-radius: 8px;
+      background: rgba(255,255,255,.18);
+      color: rgba(0,0,0,.75);
+    }
+
+    main { padding: 44px 0 56px; }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 26px;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 999px;
+      background: rgba(255,255,255,.06);
+      color: var(--muted);
+      font-weight: 650;
+      font-size: 13px;
+      letter-spacing: .2px;
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent2);
+      box-shadow: 0 0 0 4px rgba(46,233,166,.18);
+    }
+
+    h1 {
+      margin: 14px 0 10px;
+      font-size: clamp(36px, 4.2vw, 58px);
+      line-height: 1.02;
+      letter-spacing: -0.8px;
+    }
+    .tagline {
+      display: inline-block;
+      background: linear-gradient(90deg, rgba(255,255,255,.96), rgba(255,255,255,.66));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .sub {
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.6;
+      max-width: 60ch;
+    }
+
+    .hero-card {
+      position: relative;
+      border-radius: var(--radius2);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      overflow: hidden;
+    }
+    .hero-card:before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      background:
+        radial-gradient(240px 200px at 20% 10%, rgba(124,92,255,.35), transparent 70%),
+        radial-gradient(240px 200px at 90% 50%, rgba(46,233,166,.22), transparent 70%);
+      opacity: .8;
+      pointer-events: none;
+    }
+
+    .form {
+      position: relative;
+      display: grid;
+      gap: 10px;
+      z-index: 1;
+    }
+    .form label {
+      font-weight: 700;
+      letter-spacing: .2px;
+      font-size: 14px;
+    }
+    .row {
+      display: flex;
+      gap: 10px;
+      align-items: stretch;
+    }
+    input[type="email"] {
+      flex: 1;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.25);
+      color: var(--text);
+      padding: 12px 12px;
+      border-radius: 14px;
+      font-size: 15px;
+      outline: none;
+      transition: box-shadow .15s ease, border-color .15s ease, background .15s ease;
+    }
+    input[type="email"]::placeholder { color: rgba(255,255,255,.45); }
+    input[type="email"]:focus { box-shadow: var(--ring); border-color: rgba(124,92,255,.55); background: rgba(0,0,0,.32); }
+
+    .helper {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      color: var(--faint);
+      font-size: 12.5px;
+      line-height: 1.4;
+    }
+    .helper code {
+      font-family: var(--mono);
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.10);
+      padding: 2px 6px;
+      border-radius: 8px;
+      color: rgba(255,255,255,.8);
+    }
+
+    .status {
+      min-height: 18px;
+      font-size: 13px;
+      font-weight: 650;
+      color: var(--muted);
+    }
+    .status.ok { color: rgba(46,233,166,.9); }
+    .status.err { color: rgba(255,77,109,.92); }
+
+    .features {
+      margin-top: 22px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .feat {
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      padding: 12px;
+    }
+    .feat b { display: block; margin-bottom: 6px; }
+    .feat p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.45; }
+
+    footer {
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding: 22px 0;
+      color: var(--faint);
+      font-size: 13px;
+    }
+    .foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .links { display: flex; gap: 12px; }
+    .links a {
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid transparent;
+      color: var(--muted);
+    }
+    .links a:hover { border-color: rgba(255,255,255,.10); background: rgba(255,255,255,.04); color: var(--text); }
+
+    /* Responsive */
+    @media (max-width: 920px) {
+      .hero { grid-template-columns: 1fr; }
+      .features { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 520px) {
+      .row { flex-direction: column; }
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      .grain { animation: none; }
+      .btn { transition: none; }
+      input[type="email"] { transition: none; }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>Welcome to Lexxilive</h1>
-        <p>Own Your Persona. Own Your Income.</p>
-    </header>
-    <div class="hero">
-        <h2>Your Future Starts Here</h2>
-        <p>Join us to take control of your digital presence.</p>
-        <div class="waitlist">
-            <form action="#" method="POST">
-                <input type="email" placeholder="Enter your email" required>
-                <input type="submit" value="Join Waitlist">
-            </form>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header>
+    <div class="container">
+      <div class="nav">
+        <a class="brand" href="#top" aria-label="Lexxilive home">
+          <span class="logo" aria-hidden="true"></span>
+          <span>
+            Lexxilive
+            <small>Landing</small>
+          </span>
+        </a>
+
+        <div class="nav-actions">
+          <button class="btn" type="button" id="copyTaglineBtn" title="Copy tagline">
+            Copy tagline <span class="kbd">C</span>
+          </button>
+          <a class="btn primary" href="#waitlist" title="Join the waitlist">
+            Join waitlist <span class="kbd">J</span>
+          </a>
         </div>
+      </div>
     </div>
-    <footer>
-        <p>&copy; 2026 Lexxilive. All rights reserved.</p>
-    </footer>
-    <script>
-        document.querySelector('form').onsubmit = function(e) {
-            e.preventDefault();
-            const email = this.querySelector('input[type="email"]').value;
-            alert('Thank you for signing up, ' + email + '!');
-            this.reset();
+  </header>
+
+  <main id="top">
+    <div class="container">
+      <section class="hero" aria-label="Lexxilive hero">
+        <div>
+          <span class="pill"><span class="dot" aria-hidden="true"></span> Early access waitlist is open</span>
+          <h1>
+            <span class="tagline">Own Your Persona. Own Your Income.</span>
+          </h1>
+          <p class="sub">
+            Lexxilive is building a creator-first identity layer — so your presence, audience, and monetization can move with you.
+            No algorithms holding your livelihood hostage.
+          </p>
+
+          <div class="features" aria-label="Highlights">
+            <div class="feat">
+              <b>Portable identity</b>
+              <p>Keep your persona consistent across platforms, products, and communities.</p>
+            </div>
+            <div class="feat">
+              <b>Direct monetization</b>
+              <p>Own the relationship with your audience and your revenue streams.</p>
+            </div>
+            <div class="feat">
+              <b>Privacy-first</b>
+              <p>Simple, respectful signup. No trackers. No external dependencies.</p>
+            </div>
+          </div>
+        </div>
+
+        <aside class="hero-card" id="waitlist" aria-label="Waitlist signup">
+          <form class="form" id="waitlistForm" novalidate>
+            <label for="email">Get early access</label>
+            <div class="row">
+              <input
+                id="email"
+                name="email"
+                type="email"
+                inputmode="email"
+                autocomplete="email"
+                placeholder="you@domain.com"
+                required
+                aria-describedby="emailHelp"
+              />
+              <button class="btn primary" type="submit" id="submitBtn">Notify me</button>
+            </div>
+            <div class="helper" id="emailHelp">
+              <span>Press <code>J</code> to jump here.</span>
+              <span>We’ll only email about Lexxilive launch updates.</span>
+            </div>
+            <div class="status" id="status" role="status" aria-live="polite"></div>
+
+            <div class="helper" style="margin-top: 2px;">
+              <span style="opacity:.9">Demo mode:</span>
+              <span>Saved locally in your browser (no backend yet).</span>
+            </div>
+          </form>
+        </aside>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="foot">
+        <div>
+          <strong style="color: rgba(255,255,255,.78);">Lexxilive</strong>
+          <span style="margin: 0 10px; opacity:.45;">•</span>
+          <span>© <span id="year"></span> All rights reserved.</span>
+        </div>
+        <div class="links" aria-label="Footer links">
+          <a href="#top">Top</a>
+          <a href="#waitlist">Waitlist</a>
+          <a href="#" id="exportBtn" title="Export your saved signup">Export</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const TAGLINE = "Own Your Persona. Own Your Income.";
+
+      const $ = (sel) => document.querySelector(sel);
+      const yearEl = $("#year");
+      const form = $("#waitlistForm");
+      const emailEl = $("#email");
+      const statusEl = $("#status");
+      const submitBtn = $("#submitBtn");
+      const copyBtn = $("#copyTaglineBtn");
+      const exportBtn = $("#exportBtn");
+
+      yearEl.textContent = String(new Date().getFullYear());
+
+      function setStatus(msg, kind) {
+        statusEl.className = "status" + (kind ? " " + kind : "");
+        statusEl.textContent = msg || "";
+      }
+
+      function isValidEmail(value) {
+        // Reasonable email check (not perfect, but good for client-side).
+        return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(value || "").trim());
+      }
+
+      function loadSaved() {
+        try {
+          const raw = localStorage.getItem("lexxilive_waitlist");
+          if (!raw) return null;
+          return JSON.parse(raw);
+        } catch {
+          return null;
+        }
+      }
+
+      function saveSignup(email) {
+        const record = {
+          email,
+          tagline: TAGLINE,
+          created_at: new Date().toISOString(),
+          source: "landing_page"
         };
-    </script>
+        localStorage.setItem("lexxilive_waitlist", JSON.stringify(record));
+        return record;
+      }
+
+      function exportSaved() {
+        const record = loadSaved();
+        if (!record) {
+          setStatus("Nothing to export yet — join the waitlist first.", "err");
+          return;
+        }
+
+        const json = JSON.stringify(record, null, 2);
+        const blob = new Blob([json], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "lexxilive-waitlist.json";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        setStatus("Exported your saved signup.", "ok");
+      }
+
+      // Prefill if already saved
+      const saved = loadSaved();
+      if (saved && saved.email) {
+        emailEl.value = saved.email;
+        setStatus("You’re on the waitlist (saved locally).", "ok");
+      }
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        setStatus("\"");
+
+        const email = String(emailEl.value || "").trim();
+        if (!isValidEmail(email)) {
+          setStatus("Please enter a valid email address.", "err");
+          emailEl.focus();
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Saving…";
+
+        // Simulate async save
+        window.setTimeout(() => {
+          saveSignup(email);
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Notify me";
+          setStatus("Thanks — you’re on the waitlist.", "ok");
+        }, 450);
+      });
+
+      copyBtn.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(TAGLINE);
+          setStatus("Tagline copied to clipboard.", "ok");
+        } catch {
+          // Fallback
+          const t = document.createElement("textarea");
+          t.value = TAGLINE;
+          t.style.position = "fixed";
+          t.style.left = "-9999px";
+          document.body.appendChild(t);
+          t.select();
+          try { document.execCommand("copy"); setStatus("Tagline copied to clipboard.", "ok"); }
+          catch { setStatus("Could not copy. Select and copy manually:", "err"); }
+          t.remove();
+        }
+      });
+
+      exportBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        exportSaved();
+      });
+
+      // Keyboard shortcuts
+      document.addEventListener("keydown", (e) => {
+        if (e.metaKey || e.ctrlKey || e.altKey) return;
+        const key = (e.key || "").toLowerCase();
+
+        if (key === "j") {
+          e.preventDefault();
+          const target = document.getElementById("waitlist");
+          target?.scrollIntoView({ behavior: "smooth", block: "center" });
+          window.setTimeout(() => emailEl.focus(), 350);
+        }
+
+        if (key === "c") {
+          e.preventDefault();
+          copyBtn.click();
+        }
+
+        if (key === "/") {
+          // Quick focus search-like
+          e.preventDefault();
+          emailEl.focus();
+        }
+      });
+
+      // Nice focus on load
+      window.setTimeout(() => {
+        if (!emailEl.value) emailEl.focus();
+      }, 250);
+    })();
+  </script>
 </body>
 </html>
